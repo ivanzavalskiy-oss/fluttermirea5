@@ -5,6 +5,7 @@ class Habit {
   String id;
   String title;
   String description;
+  String iconUrl;
   bool daily;
   List<String> completionsIso;
 
@@ -12,6 +13,7 @@ class Habit {
     required this.id,
     required this.title,
     this.description = '',
+    this.iconUrl = '',
     this.daily = true,
     List<String>? completionsIso,
   }) : completionsIso = completionsIso ?? [];
@@ -20,6 +22,7 @@ class Habit {
     'id': id,
     'title': title,
     'description': description,
+    'iconUrl': iconUrl,
     'daily': daily,
     'completionsIso': completionsIso,
   };
@@ -28,6 +31,7 @@ class Habit {
     id: json['id'],
     title: json['title'],
     description: json['description'] ?? '',
+    iconUrl: json['iconUrl'] ?? '',
     daily: json['daily'] ?? true,
     completionsIso: List<String>.from(json['completionsIso'] ?? []),
   );
@@ -41,6 +45,7 @@ class Habit {
   }
 
   bool isCompleted(String isoDay) => completionsIso.contains(isoDay);
+
 
   static const _key = 'habits_data_v1';
 

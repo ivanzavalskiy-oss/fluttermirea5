@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../models/habit.dart';
 
 class HabitCard extends StatelessWidget {
@@ -31,6 +32,19 @@ class HabitCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       child: ListTile(
+        leading: habit.iconUrl.isNotEmpty
+            ? CachedNetworkImage(
+          imageUrl: habit.iconUrl,
+          placeholder: (_, __) => const SizedBox(
+            width: 40,
+            height: 40,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
+          errorWidget: (_, __, ___) => const Icon(Icons.image_not_supported),
+          width: 48,
+          height: 48,
+        )
+            : const Icon(Icons.task_alt, size: 40),
         title: Text(habit.title),
         subtitle: Text(_subtitle(habit)),
         onTap: onTap,

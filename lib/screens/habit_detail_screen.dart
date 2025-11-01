@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../models/habit.dart';
 import '../widgets/completion_title.dart';
 
@@ -42,9 +43,24 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(_habit.description, style: const TextStyle(fontSize: 16)),
+            if (_habit.iconUrl.isNotEmpty)
+              CachedNetworkImage(
+                imageUrl: _habit.iconUrl,
+                height: 100,
+                width: 100,
+                placeholder: (_, __) => const CircularProgressIndicator(),
+                errorWidget: (_, __, ___) => const Icon(Icons.image_not_supported, size: 80),
+              ),
+            const SizedBox(height: 16),
+            Text(
+              _habit.description.isNotEmpty
+                  ? _habit.description
+                  : 'Без описания',
+              style: const TextStyle(fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(height: 20),
             ElevatedButton.icon(
               onPressed: _toggleToday,
@@ -52,7 +68,11 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
               label: Text(completed ? 'Отменить выполнение' : 'Отметить выполненной'),
             ),
             const SizedBox(height: 20),
-            const Text('История выполнений:', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text('История выполнений:',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
             const SizedBox(height: 8),
             Expanded(
               child: ListView(
