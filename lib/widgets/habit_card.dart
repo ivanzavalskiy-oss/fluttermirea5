@@ -18,13 +18,12 @@ class HabitCard extends StatelessWidget {
 
   String _todayIso() {
     final d = DateTime.now();
-    return '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+    return "${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}";
   }
 
-  String _subtitle(Habit h) {
+  String _subtitle() {
     final today = _todayIso();
-    final done = h.isCompleted(today);
-    return done ? 'Выполнено сегодня' : 'Не выполнено';
+    return habit.isCompleted(today) ? "Выполнено сегодня" : "Не выполнено";
   }
 
   @override
@@ -46,16 +45,16 @@ class HabitCard extends StatelessWidget {
         )
             : const Icon(Icons.task_alt, size: 40),
         title: Text(habit.title),
-        subtitle: Text(_subtitle(habit)),
+        subtitle: Text(_subtitle()),
         onTap: onTap,
-        trailing: PopupMenuButton<String>(
-          onSelected: (v) {
-            if (v == 'edit') onEdit();
-            if (v == 'delete') onDelete();
+        trailing: PopupMenuButton(
+          onSelected: (value) {
+            if (value == 'edit') onEdit();
+            if (value == 'delete') onDelete();
           },
           itemBuilder: (_) => const [
-            PopupMenuItem(value: 'edit', child: Text('Изменить')),
-            PopupMenuItem(value: 'delete', child: Text('Удалить')),
+            PopupMenuItem(value: 'edit', child: Text("Изменить")),
+            PopupMenuItem(value: 'delete', child: Text("Удалить")),
           ],
         ),
       ),

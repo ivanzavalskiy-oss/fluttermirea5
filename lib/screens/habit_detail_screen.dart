@@ -43,43 +43,28 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (_habit.iconUrl.isNotEmpty)
               CachedNetworkImage(
                 imageUrl: _habit.iconUrl,
-                height: 100,
-                width: 100,
+                height: 120,
+                width: 120,
                 placeholder: (_, __) => const CircularProgressIndicator(),
                 errorWidget: (_, __, ___) => const Icon(Icons.image_not_supported, size: 80),
               ),
             const SizedBox(height: 16),
-            Text(
-              _habit.description.isNotEmpty
-                  ? _habit.description
-                  : 'Без описания',
-              style: const TextStyle(fontSize: 16),
-              textAlign: TextAlign.center,
-            ),
+            Text(_habit.description.isNotEmpty ? _habit.description : 'Без описания', textAlign: TextAlign.center),
             const SizedBox(height: 20),
             ElevatedButton.icon(
               onPressed: _toggleToday,
-              icon: Icon(completed ? Icons.check : Icons.circle_outlined),
+              icon: Icon(completed ? Icons.check : Icons.radio_button_unchecked),
               label: Text(completed ? 'Отменить выполнение' : 'Отметить выполненной'),
             ),
             const SizedBox(height: 20),
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text('История выполнений:',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
+            const Align(alignment: Alignment.centerLeft, child: Text('История выполнений:', style: TextStyle(fontWeight: FontWeight.bold))),
             const SizedBox(height: 8),
             Expanded(
-              child: ListView(
-                children: _habit.completionsIso
-                    .map((date) => CompletionTile(date: date))
-                    .toList(),
-              ),
+              child: ListView(children: _habit.completionsIso.map((d) => CompletionTile(date: d)).toList()),
             ),
           ],
         ),

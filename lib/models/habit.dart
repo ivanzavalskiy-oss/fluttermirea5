@@ -18,6 +18,7 @@ class Habit {
     List<String>? completionsIso,
   }) : completionsIso = completionsIso ?? [];
 
+
   Map<String, dynamic> toJson() => {
     'id': id,
     'title': title,
@@ -27,6 +28,7 @@ class Habit {
     'completionsIso': completionsIso,
   };
 
+
   factory Habit.fromJson(Map<String, dynamic> json) => Habit(
     id: json['id'],
     title: json['title'],
@@ -35,6 +37,7 @@ class Habit {
     daily: json['daily'] ?? true,
     completionsIso: List<String>.from(json['completionsIso'] ?? []),
   );
+
 
   void toggleCompletion(String isoDay) {
     if (completionsIso.contains(isoDay)) {
@@ -47,19 +50,20 @@ class Habit {
   bool isCompleted(String isoDay) => completionsIso.contains(isoDay);
 
 
-  static const _key = 'habits_data_v1';
+  static const String _storageKey = 'habits_data_v1';
 
   static Future<List<Habit>> load() async {
     final prefs = await SharedPreferences.getInstance();
-    final data = prefs.getString(_key);
+    final data = prefs.getString(_storageKey);
     if (data == null) return [];
+
     final list = jsonDecode(data) as List;
     return list.map((e) => Habit.fromJson(Map<String, dynamic>.from(e))).toList();
   }
 
   static Future<void> save(List<Habit> habits) async {
     final prefs = await SharedPreferences.getInstance();
-    final data = jsonEncode(habits.map((h) => h.toJson()).toList());
-    await prefs.setString(_key, data);
+    final encoded = jsonEncode(habits.map((h) => h.toJson()).toList());
+    await prefs.setString(_storageKey, encoded);
   }
 }

@@ -4,7 +4,8 @@ import 'package:uuid/uuid.dart';
 
 class EditHabitScreen extends StatefulWidget {
   final Habit? habit;
-  const EditHabitScreen({super.key, this.habit});
+  final bool embedMode;
+  const EditHabitScreen({super.key, this.habit, this.embedMode = false});
 
   @override
   State<EditHabitScreen> createState() => _EditHabitScreenState();
@@ -48,9 +49,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.habit == null ? 'Новая привычка' : 'Редактировать привычку'),
-      ),
+      appBar: widget.embedMode ? null : AppBar(title: Text(widget.habit == null ? 'Новая привычка' : 'Редактировать привычку')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
